@@ -22,28 +22,15 @@
       </nav>
     </header>
 
-    <div class="container">
-      <h2>Create a new question</h2>
-      <form id="questionForm">
-        <div class="create-question-form">
-            <div class="form-group" style="text-align: left;">
-              <input id="questionName" type="text" class="form-control form-primary" name="questionName" placeholder="Your name (optional)"/>
-              <small id="nameHelp" class="form-text text-muted">Si le das al hombre una mascara, hablará, si se la quitas, callará como el resto.</small>
-            </div>
-            <div class="form-group" style="text-align: left;">
-              <textarea id="questionContent" class="form-control form-primary" name="questionContent" rows="1" maxlength="400" rows="4" wrap="hard" placeholder="Question content..."></textarea>
-              <small id="questionContentHelp" class="form-text text-muted">Ojo con las chapas.</small>
-            </div>
-            <button id="btnSaveQuestion" type="submit" class="btn-question-primary btn-save-question">Save</button>
-        </div>
-      </form>
+    <div class="container" id="questionListContainer">
+      <h2>List of Questions</h2>
     </div>
 
     <a class="float-secondary">
       <i class="fas fa-info fa-lg my-float"></i>
     </a>
-    <a class="float-primary" href="questions.html">
-        <i class="fas fa-list-alt fa-lg my-float"></i>
+    <a class="float-primary" href="/">
+        <i class="fas fa-plus fa-lg my-float"></i>
     </a>
 
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
