@@ -1,12 +1,20 @@
 const nameFormElement = document.getElementById('questionName');
 const contentFormElement = document.getElementById('questionContent');
 const saveButton = document.getElementById('btnSaveQuestion');
+const alertMessage = document.getElementById('alertMessage');
 
 const saveQuestion = (questionAuthor, questionContent) => {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = (event) => {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            alert('Pregunta guardada correctamente');
+        if (xhttp.status === 200) {
+            alertMessage.style.opacity = 1;
+            alertMessage.className = 'alert alert-success';
+            alertMessage.innerHTML = '&#129395 Thank you, the question has been saved correctly! &#129395';
+        }
+        else if (xhttp.status !== 200) {
+            alertMessage.style.opacity = 1;
+            alertMessage.className = 'alert alert-danger';
+            alertMessage.innerHTML = '&#128561 Error, no connection with the remote server, status code: ' + xhttp.status + ' &#128561';
         }
     };
     const jsonBody = JSON.stringify({
@@ -21,13 +29,19 @@ const saveQuestion = (questionAuthor, questionContent) => {
 saveButton.onclick = (event) => {
     var questionAuthor = nameFormElement.value;
     var questionContent = contentFormElement.value;
-    
+
     if (questionContent == undefined || questionContent == null || questionContent == '') {
-        alert('Te falta escribir la pregunta');
+        alertMessage.style.opacity = 1;
+        alertMessage.className = 'alert alert-warning';
+        alertMessage.innerHTML = '&#128548 Warning, first you need to write the question. &#128548';
     }
     else {
         saveQuestion(questionAuthor, questionContent);
     }
 
     return false;
+}
+
+contentFormElement.onkeydown = (event) => {
+    alertMessage.style.opacity = 0;
 }

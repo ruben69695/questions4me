@@ -13,6 +13,9 @@ window.onload = (event) => {
                 });
             }
         }
+        else if (xhttp.readyState == 4 && xhttp.status == 404) {
+            alert("Can't connect to the remote server");
+        }
     };
     xhttp.open("GET", "http://127.0.0.1:8000/questions/", true);
     xhttp.send();

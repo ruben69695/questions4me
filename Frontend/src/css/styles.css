@@ -73,4 +73,11 @@ hr {
 h2 {
   color: #ffffff; }
 
+.alert {
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-top: 3%;
+  opacity: 0;
+  transition: opacity 2s; }
+
 /*# sourceMappingURL=styles.css.map */
