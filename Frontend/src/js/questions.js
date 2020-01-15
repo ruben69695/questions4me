@@ -23,7 +23,7 @@ window.onload = (event) => {
             htmlElementToWrite.innerHTML = 'Loading data...';
         }
     };
-    xhttp.open("GET", "http://127.0.0.1:8000/questions/", true);
+    xhttp.open("GET", "https://questions4me-apirest.azurewebsites.net/questions/?format=json", true);
     xhttp.send();
 };
 
@@ -61,7 +61,7 @@ const refreshQuestions = () => {
             }
         }
     };
-    xhttp.open("GET", "http://127.0.0.1:8000/questions/", true);
+    xhttp.open("GET", "https://questions4me-apirest.azurewebsites.net/questions/?format=json", true);
     xhttp.send();
 };
 
