@@ -8,7 +8,13 @@ A web application with Python backend, very useful when you make meetings and yo
 ## Backend
 ### Getting Started
 1.	Install Python Dependencies (pip)
+```bash
+pip install -r requirements.txt
+```
 2.  Run Python Backend
+```
+python manage.py runserver
+```
 
 ### Language and versions
 * Python 3.7
@@ -32,7 +38,13 @@ A web application with Python backend, very useful when you make meetings and yo
 ## FrontEnd
 ### Getting Started
 1.	Install Node.js Dependencies (node-modules)
+```bash
+npm install
+```
 2.  Run gruntfile.js to execute the tasks to run the web server
+```bash
+grunt
+```
 
 ### Language and versions
 * Node.js 12.6.0
