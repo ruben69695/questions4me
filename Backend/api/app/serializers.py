@@ -15,4 +15,4 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Question
-        fields = ['created_by', 'content', 'created_at', 'answered_at']
+        fields = ['url', 'created_by', 'content', 'created_at', 'answered_at']

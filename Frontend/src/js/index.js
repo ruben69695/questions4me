@@ -6,12 +6,12 @@ const alertMessage = document.getElementById('alertMessage');
 const saveQuestion = (questionAuthor, questionContent) => {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = (event) => {
-        if (xhttp.status === 200) {
+        if (xhttp.readyState === 4 && xhttp.status === 201) {
             alertMessage.style.opacity = 1;
             alertMessage.className = 'alert alert-success';
             alertMessage.innerHTML = '&#129395 Thank you, the question has been saved correctly! &#129395';
         }
-        else if (xhttp.status !== 200) {
+        else if (xhttp.readyState === 4 && xhttp.status === 0) {
             alertMessage.style.opacity = 1;
             alertMessage.className = 'alert alert-danger';
             alertMessage.innerHTML = '&#128561 Error, no connection with the remote server, status code: ' + xhttp.status + ' &#128561';
