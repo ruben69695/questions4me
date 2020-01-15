@@ -25,7 +25,7 @@ SECRET_KEY = '(golt31^o-+g0my0^7-4n3k@i8!-dby(os*n!d(3_ro944yen4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -122,6 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",

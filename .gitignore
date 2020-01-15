@@ -20,6 +20,7 @@ parts/
 sdist/
 var/
 wheels/
+static/
 pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
@@ -131,6 +132,7 @@ dmypy.json
 # Environment
 .DS_Store
 .vscode
+.deployment
 
 # Node
 node_modules
