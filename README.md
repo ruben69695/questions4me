@@ -45,6 +45,10 @@ npm install
 ```bash
 grunt
 ```
+3.  Access with the browser to the next URL
+```bash
+http://localhost:3000/
+```
 
 ### Language and versions
 * Node.js 12.6.0
