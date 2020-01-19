@@ -1,8 +1,9 @@
 const htmlElementToWrite = document.getElementById("question-list");
-const audios = [new Audio('../audio/argh.mp3'), new Audio('../audio/cuek.mp3')];
+const audios = [new Audio('audio/argh.mp3'), new Audio('audio/cuek.mp3')];
 
 var audioIndex = 0;
 var questionList = [];
+var errorConnecting = false;
 
 window.onload = (event) => {
     var xhttp = new XMLHttpRequest();
@@ -18,12 +19,14 @@ window.onload = (event) => {
         }
         else if (xhttp.readyState === 4 && xhttp.status === 0) {
             htmlElementToWrite.innerHTML = "Error connecting to the server, can't load questions";
+            errorConnecting = true;
         }
         else if (xhttp.readyState === 0) {
             htmlElementToWrite.innerHTML = 'Loading data...';
         }
     };
     xhttp.open("GET", "https://questions4me-apirest.azurewebsites.net/questions/?format=json", true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send();
 };
 
@@ -34,8 +37,11 @@ const refreshQuestions = () => {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             if (xhttp.responseText !== '') {
                 const newQuestions = JSON.parse(xhttp.responseText).filter((element) => element.answered_at == null);
+                if (errorConnecting) {
+                    htmlElementToWrite.innerHTML = "";
+                    errorConnecting = false;
+                }
                 deleteAnsweredQuestions(newQuestions);
-
                 // Añadir nuevas preguntas a la lista actual
                 let playAudio = false;
                 newQuestions.forEach(question => {
@@ -62,6 +68,7 @@ const refreshQuestions = () => {
         }
     };
     xhttp.open("GET", "https://questions4me-apirest.azurewebsites.net/questions/?format=json", true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send();
 };
 
