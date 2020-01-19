@@ -25,6 +25,9 @@ SECRET_KEY = '(golt31^o-+g0my0^7-4n3k@i8!-dby(os*n!d(3_ro944yen4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# DEPLOYMENT: don't run with azure turned on if you are not ready to deploy it on azure
+AZURE = False
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -77,12 +80,52 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if AZURE:
+    # Using Azure Key Vault to Retrieve Secrets for database connection
+    from azure.keyvault.secrets import SecretClient
+    from azure.core.exceptions import HttpResponseError
+    from msrestazure.azure_active_directory import MSIAuthentication
+    import sys
+
+    # Create MSI Authentication
+    credentials = MSIAuthentication()
+
+    key_vault_url = os.environ['Questions4MeVaultUrl']
+
+    client = SecretClient(key_vault_url, credentials)
+    
+    if key_vault_url is None:
+        raise Exception('Key Vault Url not found as environment variable')
+    
+    # Get Host Secret
+    secret_host_keyname = 'PostgresHost'
+    host_secret_bundle = client.get_secret(secret_host_keyname, version='a2a018e3dea3457e9e21674054dbe2ff')
+
+    # Get User Secret
+    secret_user_keyname = 'PostgresUserName'
+    user_secret_bundle = client.get_secret(secret_user_keyname, version='eae4650dffa3466b97bbc733009f7647')
+
+    # Get Password Secret
+    secret_password_keyname = 'PostgresPassword'
+    password_secret_bundle = client.get_secret(secret_password_keyname, version='a9e48977f66641efb456120d7036fd15')
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'postgres',
+            'USER': user_secret_bundle.value,
+            'PASSWORD': password_secret_bundle.value,
+            'HOST': host_secret_bundle.value,
+            'PORT': '5432'
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
