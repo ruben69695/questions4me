@@ -21,7 +21,7 @@ const saveQuestion = (questionAuthor, questionContent) => {
         "created_by": questionAuthor,
         "content": questionContent
     });
-    xhttp.open("POST", "http://127.0.0.1:8000/questions/", true);
+    xhttp.open("POST", "https://q4me-apirest.azurewebsites.net/api/questions/", true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send(jsonBody);
 }
