@@ -23,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '(golt31^o-+g0my0^7-4n3k@i8!-dby(os*n!d(3_ro944yen4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # DEPLOYMENT: don't run with azure turned on if you are not ready to deploy it on azure
-AZURE = False
+AZURE = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -83,27 +83,30 @@ WSGI_APPLICATION = 'api.wsgi.application'
 if AZURE:
     # Using Azure Key Vault to Retrieve Secrets for database connection
     from azure.keyvault.secrets import SecretClient
-    from azure.core.exceptions import HttpResponseError
-    from msrestazure.azure_active_directory import MSIAuthentication
+    from azure.identity import DefaultAzureCredential
     import sys
 
-    # Create MSI Authentication
-    credentials = MSIAuthentication()
+    """Azure Managed Identities Authentication"""
 
-    key_vault_url = os.environ['Questions4MeVaultUrl']
+    # Get Credentials
+    credentials = DefaultAzureCredential()
+
+    key_vault_url = f"https://{os.environ['Questions4MeVaultUrl']}.vault.azure.net/"
 
     client = SecretClient(key_vault_url, credentials)
     
     if key_vault_url is None:
         raise Exception('Key Vault Url not found as environment variable')
-    
+    elif client is None:
+        raise Exception('Secret Client is null')
+
     # Get Host Secret
     secret_host_keyname = 'PostgresHost'
     host_secret_bundle = client.get_secret(secret_host_keyname, version='a2a018e3dea3457e9e21674054dbe2ff')
 
     # Get User Secret
     secret_user_keyname = 'PostgresUserName'
-    user_secret_bundle = client.get_secret(secret_user_keyname, version='eae4650dffa3466b97bbc733009f7647')
+    user_secret_bundle = client.get_secret(secret_user_keyname, version='4a5809618c2849cda828d0c28a2a5b09')
 
     # Get Password Secret
     secret_password_keyname = 'PostgresPassword'
@@ -112,7 +115,7 @@ if AZURE:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'postgres',
+            'NAME': 'q4me-django',
             'USER': user_secret_bundle.value,
             'PASSWORD': password_secret_bundle.value,
             'HOST': host_secret_bundle.value,
