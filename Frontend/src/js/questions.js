@@ -25,7 +25,7 @@ window.onload = (event) => {
             htmlElementToWrite.innerHTML = 'Loading data...';
         }
     };
-    xhttp.open("GET", "https://questions4me-apirest.azurewebsites.net/questions/?format=json", true);
+    xhttp.open("GET", "https://q4me-apirest.azurewebsites.net/api/questions/", true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send();
 };
@@ -67,7 +67,7 @@ const refreshQuestions = () => {
             }
         }
     };
-    xhttp.open("GET", "https://questions4me-apirest.azurewebsites.net/questions/?format=json", true);
+    xhttp.open("GET", "https://q4me-apirest.azurewebsites.net/api/questions/", true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send();
 };
@@ -90,13 +90,13 @@ const deleteAnsweredQuestions = (newQuestions) => {
     questionsToRemove.forEach(element => {
 
         // Eliminar etiqueta html
-        var docElement = document.getElementById(element.url);
+        var docElement = document.getElementById(element.id);
 
         if (docElement != null) {
             docElement.remove();
             
             // Eliminar de la current list
-            questionList = questionList.filter((xitem) => xitem.url != element.url);
+            questionList = questionList.filter((xitem) => xitem.id != element.id);
         }
     });
 
@@ -109,7 +109,7 @@ const getQuestionElement = (question) => {
     if (question.created_by === '' || question.created_by === null) {
         question.created_by = "Anonymous";
     }
-    return `<div id="${question.url}" class="card p-3 question-item"><blockquote class="blockquote mb-0 card-body"><p style="color:black;">${question.content}</p><footer class="blockquote-footer"><small class="text-muted">${question.created_by}</small></footer></blockquote></div>`;
+    return `<div id="${question.id}" class="card p-3 question-item"><blockquote class="blockquote mb-0 card-body"><p style="color:black;">${question.content}</p><footer class="blockquote-footer"><small class="text-muted">${question.created_by}</small></footer></blockquote></div>`;
 };
 
 const existQuestionInList = (question, questions) => {
@@ -117,7 +117,7 @@ const existQuestionInList = (question, questions) => {
     let index = 0;
 
     while(index < questions.length && !exist) {
-        if (questions[index].url === question.url) {
+        if (questions[index].id === question.id) {
             exist = true;
         }
         index++;
